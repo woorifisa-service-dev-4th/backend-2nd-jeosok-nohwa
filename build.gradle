@@ -12,9 +12,14 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'mysql:mysql-connector-java:8.0.33'
 
     // Jsoup 라이브러리
     implementation 'org.jsoup:jsoup:1.15.3'
+
+    // yaml 설정
+    implementation 'org.yaml:snakeyaml:2.2'
+
 }
 
 test {
