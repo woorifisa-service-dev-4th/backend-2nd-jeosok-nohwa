@@ -76,6 +76,8 @@ public class NewsRepository {
 		return newsList;
 	}
 
+
+
 	public Optional<News> findById(int id) {
 		String query = "SELECT id, title, link, press FROM news WHERE id = ?";
 
