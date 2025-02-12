@@ -1,5 +1,8 @@
 package jeosok_nowha.backend.domain.news.controller;
 
+import jeosok_nowha.backend.domain.member.controller.MemberController;
+import jeosok_nowha.backend.domain.member.repository.MemberRepository;
+import jeosok_nowha.backend.domain.member.service.MemberService;
 import jeosok_nowha.backend.domain.news.service.NewsService;
 
 import java.util.Scanner;
@@ -60,7 +63,7 @@ public class NewsController {
 			System.out.println("2. 뉴스 전체 조회");
 			System.out.println("3. 뉴스 수정");
 			System.out.println("4. 뉴스 삭제");
-			System.out.println("5. 종료");
+			System.out.println("5. 메인 화면");
 			System.out.print("선택: ");
 
 			int choice = scanner.nextInt();
@@ -79,6 +82,11 @@ public class NewsController {
 				case 4:
 					deleteNews();
 					break;
+				case 5:
+					MemberRepository memberRepository = MemberRepository.getInstance();
+					MemberService memberService = new MemberService(memberRepository);
+					MemberController memberController = new MemberController(memberService);
+					memberController.run();
 				default:
 					System.out.println("올바른 번호를 입력하세요.");
 			}
