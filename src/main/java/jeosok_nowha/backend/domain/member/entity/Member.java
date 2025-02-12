@@ -13,14 +13,13 @@ public class Member {
 	private final String password;
 
 	public Member(String id, String nickname, String email, double height, double weight,
-		String profileImage, MemberStatus status, MemberRole role, String password) {
+		MemberStatus status, MemberRole role, String password) {
 		this.id = id;
 		this.nickname = nickname;
 		this.email = email;
 		this.height = height;
 		this.weight = weight;
-		this.bmi = calculateBMI();
-		this.profileImage = profileImage;
+		this.bmi = calculateBMI(); // BMI 자동 계산
 		this.status = status;
 		this.role = role;
 		this.password = password;
@@ -39,6 +38,4 @@ public class Member {
 	public MemberStatus getStatus() { return status; }
 	public MemberRole getRole() { return role; }
 	public String getPassword() { return password; }
-
-
 }

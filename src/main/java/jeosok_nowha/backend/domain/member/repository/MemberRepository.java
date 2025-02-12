@@ -1,14 +1,21 @@
 package jeosok_nowha.backend.domain.member.repository;
 
-import jeosok_nowha.backend.domain.member.entity.Member;
+import static jeosok_nowha.backend.global.common.config.DatabaseConfig.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import jeosok_nowha.backend.global.common.config.DatabaseConfig;
+import jeosok_nowha.backend.domain.member.entity.Member;
+import jeosok_nowha.backend.domain.member.entity.MemberRole;
+import jeosok_nowha.backend.domain.member.entity.MemberStatus;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MemberRepository {
+
+
 	private static final MemberRepository instance = new MemberRepository();
-	private final Map<String, Member> users = new HashMap<>();
 
 	private MemberRepository() {}
 
@@ -16,37 +23,96 @@ public class MemberRepository {
 		return instance;
 	}
 
-	public synchronized void save(Member user) {
-		users.put(user.getEmail(), user);
-	}
+	public void save(Member member) {
+		String sql = "INSERT INTO member (nickname, email, height, weight, status, role, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-	public synchronized Optional<Member> findByEmail(String email) {
-		return Optional.ofNullable(users.get(email));
-	}
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-	// ✅ 저장된 사용자 수 반환 (에러 해결)
-	public synchronized int getSize() {
-		return users.size();
-	}
+			pstmt.setString(1, member.getNickname());
+			pstmt.setString(2, member.getEmail());
+			pstmt.setDouble(3, member.getHeight());
+			pstmt.setDouble(4, member.getWeight());
+			pstmt.setString(5, member.getStatus().name());
+			pstmt.setString(6, member.getRole().name());
+			pstmt.setString(7, member.getPassword());
 
-	public synchronized void printUsers() {
-		if (users.isEmpty()) {
-			System.out.println("📌 저장된 사용자가 없습니다.");
-			return;
+			pstmt.executeUpdate();
+			System.out.println("✅ 회원 저장 완료: " + member.getEmail());
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+	}
 
-		System.out.println("\n--- 저장된 사용자 목록 ---");
-		for (Member user : users.values()) {
-			System.out.println("📌 ID: " + user.getId());
-			System.out.println("📌 닉네임: " + user.getNickname());
-			System.out.println("📌 이메일: " + user.getEmail());
-			System.out.println("📌 키: " + user.getHeight() + "cm");
-			System.out.println("📌 몸무게: " + user.getWeight() + "kg");
-			System.out.println("📌 BMI: " + user.getBmi());
-			System.out.println("📌 상태: " + user.getStatus());
-			System.out.println("📌 역할: " + user.getRole());
-			System.out.println("📌 암호화된 비밀번호: " + user.getPassword());
-			System.out.println("-----------------------------");
+	public Optional<Member> findByEmail(String email) {
+		String sql = "SELECT * FROM member WHERE email = ?";
+
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, email);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				Member member = new Member(
+					rs.getString("id"),
+					rs.getString("nickname"),
+					rs.getString("email"),
+					rs.getDouble("height"),
+					rs.getDouble("weight"),
+					MemberStatus.valueOf(rs.getString("status")),
+					MemberRole.valueOf(rs.getString("role")),
+					rs.getString("password")
+				);
+				return Optional.of(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return Optional.empty();
+	}
+	public void updateUserInfo(String email, String newNickname, double newHeight, double newWeight) {
+		String sql = "UPDATE member SET nickname = ?, height = ?, weight = ? WHERE email = ?";
+
+		try (Connection conn = getConnection();
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, newNickname);
+			pstmt.setDouble(2, newHeight);
+			pstmt.setDouble(3, newWeight);
+			pstmt.setString(4, email);
+
+			pstmt.executeUpdate();
+			System.out.println("✅ 회원 정보 업데이트 완료: " + email);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<Member> findAll() {
+		List<Member> members = new ArrayList<>();
+		String sql = "SELECT * FROM member";
+
+		try (Connection conn = getConnection();
+			 Statement stmt = conn.createStatement();
+			 ResultSet rs = stmt.executeQuery(sql)) {
+
+			while (rs.next()) {
+				Member member = new Member(
+					rs.getString("id"),
+					rs.getString("nickname"),
+					rs.getString("email"),
+					rs.getDouble("height"),
+					rs.getDouble("weight"),
+					MemberStatus.valueOf(rs.getString("status")),
+					MemberRole.valueOf(rs.getString("role")),
+					rs.getString("password")
+				);
+				members.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return members;
 	}
 }
