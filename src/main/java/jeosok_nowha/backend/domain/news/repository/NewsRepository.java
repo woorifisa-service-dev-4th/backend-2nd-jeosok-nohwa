@@ -42,21 +42,35 @@ public class NewsRepository {
 
 	public List<News> findAll() {
 		List<News> newsList = new ArrayList<>();
-		String query = "SELECT id, title,link, press FROM news";
+		String query = "SELECT id, title, link, press FROM news";
 
 		try (Connection conn = DatabaseConfig.getConnection();
 			 Statement stmt = conn.createStatement();
 			 ResultSet rs = stmt.executeQuery(query)) {
 
 			while (rs.next()) {
-				newsList.add(new News(
-					rs.getInt("id"),
-					rs.getString("title"),
-					rs.getString("link"),
-					rs.getString("press")
-				));
+				// NULL 값 체크 후 기본값 할당
+				int id = rs.getInt("id");
+				String title = rs.getString("title");
+				String link = rs.getString("link");
+				String press = rs.getString("press");
+
+				// 디버깅을 위한 데이터 출력
+				//System.out.println("조회된 데이터: ");
+				System.out.println("ID: " + id);
+				System.out.println("제목: " + title);
+				System.out.println("링크: " + link);
+				System.out.println("언론사: " + press);
+
+				// NULL 값이 있으면 기본값 설정
+				title = (title != null) ? title : "제목 없음";
+				link = (link != null) ? link : "https://no-link.com";
+				press = (press != null) ? press : "알 수 없는 언론사";
+
+				newsList.add(new News(id, title, link, press));
 			}
 		} catch (SQLException e) {
+			System.out.println("❌ SQL 실행 중 오류 발생: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return newsList;
@@ -88,7 +102,7 @@ public class NewsRepository {
 
 	// 🔹 뉴스 수정 (Update)
 	public boolean update(int id, String newTitle,String newLink,String newPress) {
-		String query = "UPDATE news SET title = ?, contents = ?, link = ? WHERE id = ?";
+		String query = "UPDATE news SET title = ?, link = ?,  press = ?, WHERE id = ?";
 
 		try (Connection conn = DatabaseConfig.getConnection();
 			 PreparedStatement pstmt = conn.prepareStatement(query)) {
