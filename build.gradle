@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'cal.sal'
+group = 'jeosok_nowha.backend'
 version = '1.0-SNAPSHOT'
 
 repositories {
