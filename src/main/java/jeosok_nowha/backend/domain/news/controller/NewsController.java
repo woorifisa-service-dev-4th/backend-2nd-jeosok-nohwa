@@ -67,7 +67,7 @@ public class NewsController {
 			System.out.print("선택: ");
 
 			int choice = scanner.nextInt();
-			scanner.nextLine(); // 버퍼 클리어
+			scanner.nextLine();
 
 			switch (choice) {
 				case 1:
@@ -90,8 +90,6 @@ public class NewsController {
 				default:
 					System.out.println("올바른 번호를 입력하세요.");
 			}
-			scanner.close();
-			System.out.println("프로그램을 종료합니다.");
 		}
 	}
 }
