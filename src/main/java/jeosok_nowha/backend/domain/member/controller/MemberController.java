@@ -45,11 +45,11 @@ public class MemberController {
 						break;
 					case "4":
 						// 채팅 메뉴
-						String currentUser = userService.currentUser.getNickname();
-						if(currentUser == null) {
+						if(userService.currentUser == null) {
 							MemberPrintUtil.printError("로그인 후 이용 가능합니다.");
 							break;
 						}
+						String currentUser = userService.currentUser.getNickname();
 						ChatController chatController = new ChatController();
 						chatController.run(currentUser);
 						continue; // 채팅 종료 후 메인 메뉴로 돌아가기
