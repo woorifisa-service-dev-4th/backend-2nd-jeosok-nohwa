@@ -67,7 +67,7 @@ public class NewsController {
 			System.out.print("선택: ");
 
 			int choice = scanner.nextInt();
-			scanner.nextLine(); // 버퍼 클리어
+			scanner.nextLine();
 
 			switch (choice) {
 				case 1:
