@@ -21,7 +21,6 @@ public class ScoreRepository {
 			stmt.setLong(2, score.getUserId()); // userId
 			stmt.setDouble(3, score.getDietScore()); // dietScore
 			stmt.setDouble(4, score.getExerciseScore()); // exerciseScore
-			stmt.setDouble(5, score.getRelatedChatSummaryId()); // totalScore
 
 			stmt.executeUpdate(); // SQL 실행
 			System.out.println("Score saved successfully!");
@@ -41,7 +40,6 @@ public class ScoreRepository {
 					Long userId = rs.getLong("user_id");
 					double dietScore = rs.getDouble("diet_score");
 					double exerciseScore = rs.getDouble("exercise_score");
-					double totalScore = rs.getDouble("total_score");
 
 					// Score 객체 생성 후 리스트에 추가
 					Score score = new Score(recordDate, userId, dietScore, exerciseScore);

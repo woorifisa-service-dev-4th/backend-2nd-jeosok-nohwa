@@ -10,6 +10,7 @@ import jeosok_nowha.backend.domain.member.util.MemberPrintUtil;
 import jeosok_nowha.backend.domain.news.controller.NewsController;
 import jeosok_nowha.backend.domain.news.repository.NewsRepository;
 import jeosok_nowha.backend.domain.news.service.NewsService;
+import jeosok_nowha.backend.domain.score.controller.ScoreController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -50,6 +51,10 @@ public class MemberController {
 						NewsService newsService = new NewsService(newsRepository);
 						NewsController newsController = new NewsController(newsService);
 						newsController.run();
+						break;
+					case "6":
+						ScoreController scoreController = new ScoreController();
+						scoreController.getScore();
 						break;
 					case "99":
 						System.exit(0);
