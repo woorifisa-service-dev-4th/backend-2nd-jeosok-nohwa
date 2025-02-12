@@ -1,86 +1,85 @@
 package jeosok_nowha.backend.domain.chat;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import jeosok_nowha.backend.domain.chat.config.ChatConfig;
+import java.io.*;
 import java.net.Socket;
 
 public class ChatClient {
-	public static void main(String[] args) throws Exception{
+	private final String name;
+	private final Socket socket;
+	private final BufferedReader serverInput;
+	private final PrintWriter serverOutput;
+	private final BufferedReader keyboardInput;
 
-		if(args.length!=1){
-			System.out.println("사용법 : java com.example.chat2.ChatClient 닉네임");
-			return;
-		}
-		String name = args[0];
-		Socket socket = new Socket("127.0.0.1", 8888);
+	public ChatClient(String name) throws Exception {
+		this.name = name;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-		PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(),"UTF-8"));
-		BufferedReader keyboard = new BufferedReader(new InputStreamReader(System.in,"UTF-8"));
+		// 🔥 ChatConfig 사용해서 YML에서 설정 가져오기
+		ChatConfig config = new ChatConfig();
+		String host = config.getHost();
+		int port = config.getPort();
 
-		// 닉네임 전송
-		pw.println(name);
-		pw.flush();
+		System.out.println("✅ 서버에 연결 중... " + host + ":" + port);
+		this.socket = new Socket(host, port);
 
-		// 백그라운드로 서버가 보내준 메세지를 읽여들여서 화면에 출력한다.
-		InputThread inputThread = new InputThread(br);
-		inputThread.start();
+		this.serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+		this.serverOutput = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+		this.keyboardInput = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
 
-		// 클라이언트는 읽어들인 메세지를 서버에 전송한다.
-		try{
-			String line = null;
-			while((line = keyboard.readLine()) != null) {
-				if("/quit".equals(line)) {
-					pw.println("/quit");
-					pw.flush();
-					break;
-				}
-				pw.println(line);
-				pw.flush();
-			}
-		}catch(Exception ex){
-			System.out.println("...");
-		}
-
-		try{
-			br.close();
-		}catch(Exception ex){
-			System.out.println("111");
-		}
-
-		try{
-			pw.close();
-		}catch(Exception ex){
-			System.out.println("222");
-		}
-
-		try{
-			System.out.println("socket close!!");
-			socket.close();
-		}catch(Exception ex){
-			System.out.println("333");
-		}
-
-	}
-}
-
-class InputThread extends Thread {
-	BufferedReader br;
-	public InputThread(BufferedReader br){
-		this.br = br;
+		startChat();
 	}
 
-	@Override
-	public void run() {
-		try{
-			String line = null;
-			while((line = br.readLine()) != null){
-				System.out.println(line);
+	private void startChat() {
+		try {
+			// 닉네임 전송
+			serverOutput.println(name);
+			serverOutput.flush();
+
+			// 서버 메시지를 백그라운드에서 수신
+			new InputThread(serverInput).start();
+
+			// 사용자 입력을 서버로 전송
+			sendMessageLoop();
+
+		} catch (Exception ex) {
+			System.out.println("❌ 채팅 중 오류 발생: " + ex.getMessage());
+		} finally {
+			closeResources();
+		}
+	}
+
+	private void sendMessageLoop() throws IOException {
+		String message;
+		while (true) {
+			System.out.print("user: "); // 개행 없이 표시
+			message = keyboardInput.readLine(); // 사용자 입력 받기
+
+			if ("/quit".equalsIgnoreCase(message)) {
+				serverOutput.println("/quit");
+				break;
 			}
-		}catch(Exception ex){
-			System.out.println("...");
+			serverOutput.println(name + ": " + message);
+		}
+	}
+
+	private void closeResources() {
+		try {
+			if (serverInput != null) serverInput.close();
+		} catch (IOException ex) {
+			System.out.println("❌ BufferedReader 종료 오류");
+		}
+		try {
+			if (serverOutput != null) serverOutput.close();
+		} catch (Exception ex) {
+			System.out.println("❌ PrintWriter 종료 오류");
+		}
+		try {
+			if (socket != null) {
+				System.out.println("✅ 소켓 종료...");
+				socket.close();
+			}
+		} catch (IOException ex) {
+			System.out.println("❌ 소켓 종료 오류");
 		}
 	}
 }
