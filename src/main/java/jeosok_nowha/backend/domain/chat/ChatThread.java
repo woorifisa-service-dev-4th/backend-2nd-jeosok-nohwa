@@ -31,7 +31,7 @@ public class ChatThread extends Thread {
 
 			String message;
 			while ((message = br.readLine()) != null) {
-				if ("/quit".equalsIgnoreCase(message)) {
+				if ("/Q".equalsIgnoreCase(message)) {
 					break;
 				}
 				broadcast(name + ": " + message);

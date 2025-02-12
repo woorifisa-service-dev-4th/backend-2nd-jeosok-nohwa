@@ -26,7 +26,7 @@ public class ChatServer {
 
 	private void startServer() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			System.out.println("✅ 채팅 서버 시작! (포트: " + port + ")");
+			System.out.println("✅ 채팅 시작! 오늘은 뭐 드셨나요? ");
 
 			while (true) {
 				Socket socket = serverSocket.accept();

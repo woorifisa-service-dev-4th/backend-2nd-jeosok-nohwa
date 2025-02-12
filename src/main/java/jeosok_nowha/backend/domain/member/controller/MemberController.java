@@ -2,6 +2,7 @@ package jeosok_nowha.backend.domain.member.controller;
 
 import static jeosok_nowha.backend.domain.member.util.MemberPrintUtil.*;
 
+import jeosok_nowha.backend.domain.chat.controller.ChatController;
 import jeosok_nowha.backend.domain.member.payload.request.SignUpRequest;
 import jeosok_nowha.backend.domain.member.payload.request.SignInRequest;
 import jeosok_nowha.backend.domain.member.service.MemberService;
@@ -42,7 +43,8 @@ public class MemberController {
 						break;
 					case "4":
 						// 채팅 메뉴
-						break;
+						new ChatController().run();
+						continue; // 채팅 종료 후 메인 메뉴로 돌아가기
 					case "5":
 						NewsRepository newsRepository = new NewsRepository();
 						NewsService newsService = new NewsService(newsRepository);

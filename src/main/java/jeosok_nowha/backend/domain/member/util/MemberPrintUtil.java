@@ -17,12 +17,14 @@ public class MemberPrintUtil {
 	}
 
 	public static void printMenu() {
-		print("\n---------------------- [Jesoknowha System] ----------------------");
-		print("  1. 로그인                      2. 회원가입");
-		print("  3. 현재 로그인된 사용자 정보 조회  4. 채팅");
-		print("  5. 뉴스                        99. 종료"  );
-		print("---------------------------------------------------------------------");
-		print("기능 선택: ");
+		print("\n---------------------- [Jeosok-Nowha System] ----------------------");
+		print("  1. 로그인            2. 회원가입");
+		print("  3. 현재 로그인된 사용자 정보 조회");
+		print("  4. 채팅              5. 뉴스");
+		print("");
+		print(" 99. 종료");
+		print("-----------------------------------------------------------------");
+		print("기능 번호 선택: ");
 	}
 
 	public static void printSignUpPrompt() {
