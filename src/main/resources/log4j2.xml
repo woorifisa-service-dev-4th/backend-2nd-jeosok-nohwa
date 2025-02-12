@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <!-- 콘솔 출력 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c{1} - %msg%n" />
+        </Console>
+
+        <!-- 로그 파일 저장 -->
+        <File name="FileLogger" fileName="logs/app.log" append="true">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %c{1} - %msg%n" />
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Root>
+
+        <!-- 특정 클래스에 대한 로깅 레벨 설정 -->
+        <Logger name="jeosok_nowha.backend.domain.member" level="debug" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+    </Loggers>
+</Configuration>
