@@ -6,7 +6,7 @@ import java.util.Date;
  * 하루 저속노화 점수를 저장하는 클래스
  */
 
-class Score {
+public class Score {
 	/** 기록된 날짜 */
 	private Date recordDate;
 	/** 사용자 ID */
@@ -17,6 +17,27 @@ class Score {
 	private double exerciseScore;
 	/** 연관된 요약 ID */
 	private Long relatedChatSummaryId;
+
+	public Date getRecordDate() {
+		return recordDate;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public double getDietScore() {
+		return dietScore;
+	}
+
+	public double getExerciseScore() {
+		return exerciseScore;
+	}
+
+	public Long getRelatedChatSummaryId() {
+		return relatedChatSummaryId;
+	}
+
 
 	/**
 	 * DailyScore 생성자
