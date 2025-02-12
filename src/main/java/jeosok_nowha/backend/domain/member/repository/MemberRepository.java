@@ -24,7 +24,11 @@ public class MemberRepository {
 		return Optional.ofNullable(users.get(email));
 	}
 
-	// ✅ 저장된 사용자 목록 출력
+	// ✅ 저장된 사용자 수 반환 (에러 해결)
+	public synchronized int getSize() {
+		return users.size();
+	}
+
 	public synchronized void printUsers() {
 		if (users.isEmpty()) {
 			System.out.println("📌 저장된 사용자가 없습니다.");

@@ -17,10 +17,9 @@ public class MemberMain {
 
 		while (true) {
 			try {
-				// ✅ 메뉴 출력
 				System.out.println("\n---------------------- [User Management System] ----------------------");
-				System.out.println("  1. 회원가입                  2. 저장된 사용자 목록 조회");
-				System.out.println("  99. 종료");
+				System.out.println("  1. 로그인                      2. 회원가입");
+				System.out.println("  3. 저장된 사용자 목록 조회      99. 종료");
 				System.out.println("---------------------------------------------------------------------");
 				System.out.print("메뉴 선택: ");
 
@@ -29,10 +28,14 @@ public class MemberMain {
 
 				switch (input.trim()) {
 					case "1":
+						System.out.println("\n[로그인]");
+						userController.signIn();
+						break;
+					case "2":
 						System.out.println("\n[회원가입]");
 						userController.signUp();
 						break;
-					case "2":
+					case "3":
 						System.out.println("\n[📌 저장된 사용자 목록]");
 						userRepository.printUsers();
 						break;
