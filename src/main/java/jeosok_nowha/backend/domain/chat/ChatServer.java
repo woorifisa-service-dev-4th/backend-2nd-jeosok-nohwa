@@ -1,32 +1,27 @@
 package jeosok_nowha.backend.domain.chat;
 
-
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jeosok_nowha.backend.domain.chat.config.ChatConfig;
-
-
+import jeosok_nowha.backend.global.common.config.ChatConfig;
 
 public class ChatServer {
-	private List<ChatThread> clients;
-	private int port;
+	private final List<ChatThread> clients;
+
 
 	public ChatServer() {
-		// 🔥 YAML 설정에서 포트 번호 가져오기
-		ChatConfig config = new ChatConfig();
-		this.port = config.getPort();
 		this.clients = Collections.synchronizedList(new ArrayList<>());
-
-		startServer();
 	}
 
-	private void startServer() {
+	public void startServer() {
+		ChatConfig config = new ChatConfig();
+		String host = config.getHost();
+		int port = config.getPort();
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
-			System.out.println("✅ 채팅 시작! 오늘은 뭐 드셨나요? ");
+			System.out.println("✅ 채팅 서버가 시작되었습니다.");
 
 			while (true) {
 				Socket socket = serverSocket.accept();
@@ -37,6 +32,4 @@ public class ChatServer {
 			System.out.println("❌ 서버 오류 발생: " + e.getMessage());
 		}
 	}
-
 }
-

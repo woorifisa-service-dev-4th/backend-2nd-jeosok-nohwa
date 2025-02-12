@@ -1,16 +1,13 @@
 package jeosok_nowha.backend.domain.chat;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
 public class ChatThread extends Thread {
-	private Socket socket;
-	private List<ChatThread> clients;
-	private PrintWriter pw;
+	private final Socket socket;
+	private final List<ChatThread> clients;
+	private PrintWriter output;
 	private String name;
 
 	public ChatThread(Socket socket, List<ChatThread> clients) {
@@ -22,44 +19,52 @@ public class ChatThread extends Thread {
 	@Override
 	public void run() {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-			pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
+			BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
 
-			// 클라이언트가 닉네임을 보냄
-			this.name = br.readLine();
-			broadcast(name + "님이 입장하셨습니다.");
+			// ✅ 클라이언트의 닉네임을 첫 메시지로 받음
+			this.name = input.readLine();
+			broadcast("✅ " + name + " 님이 입장하셨습니다.");
 
 			String message;
-			while ((message = br.readLine()) != null) {
-				if ("/Q".equalsIgnoreCase(message)) {
+			while ((message = input.readLine()) != null) {
+				if ("/quit".equalsIgnoreCase(message)) {
 					break;
 				}
 				broadcast(name + ": " + message);
 			}
-		} catch (Exception e) {
-			System.out.println("클라이언트 연결 종료: " + e.getMessage());
+
+		} catch (IOException e) {
+			System.out.println("❌ 클라이언트 연결 오류: " + e.getMessage());
 		} finally {
-			try {
-				clients.remove(this);
-				socket.close();
-				broadcast(name + "님이 퇴장하셨습니다.");
-			} catch (Exception e) {
-				System.out.println("소켓 닫기 오류: " + e.getMessage());
-			}
+			closeConnection();
 		}
 	}
 
 	private void broadcast(String message) {
 		synchronized (clients) {
 			for (ChatThread client : clients) {
-				client.sendMessage(message);
+				if (client != this) { // 자신에게는 전송하지 않음
+					client.sendMessage(message);
+				}
 			}
 		}
 	}
 
 	private void sendMessage(String message) {
-		if (pw != null) {
-			pw.println(message);
+		if (output != null) {
+			output.println(message);
+			output.flush();
+		}
+	}
+
+	private void closeConnection() {
+		try {
+			clients.remove(this);
+			socket.close();
+			broadcast("❌ " + name + " 님이 퇴장하셨습니다.");
+		} catch (IOException e) {
+			System.out.println("❌ 소켓 종료 오류: " + e.getMessage());
 		}
 	}
 }

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class MemberService {
 	private final MemberRepository userRepository;
-	private Member currentUser;
+	public Member currentUser;
 
 	public MemberService(MemberRepository userRepository) {
 		this.userRepository = userRepository;

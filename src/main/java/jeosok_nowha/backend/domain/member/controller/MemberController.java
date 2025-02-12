@@ -10,6 +10,7 @@ import jeosok_nowha.backend.domain.member.util.MemberPrintUtil;
 import jeosok_nowha.backend.domain.news.controller.NewsController;
 import jeosok_nowha.backend.domain.news.repository.NewsRepository;
 import jeosok_nowha.backend.domain.news.service.NewsService;
+import jeosok_nowha.backend.global.common.utils.PrintUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class MemberController {
 	}
 
 	public void run() {
+		PrintUtils.printBanner();
 		while (true) {
 			try {
 				printMenu();
@@ -43,7 +45,13 @@ public class MemberController {
 						break;
 					case "4":
 						// 채팅 메뉴
-						new ChatController().run();
+						String currentUser = userService.currentUser.getNickname();
+						if(currentUser == null) {
+							MemberPrintUtil.printError("로그인 후 이용 가능합니다.");
+							break;
+						}
+						ChatController chatController = new ChatController();
+						chatController.run(currentUser);
 						continue; // 채팅 종료 후 메인 메뉴로 돌아가기
 					case "5":
 						NewsRepository newsRepository = new NewsRepository();

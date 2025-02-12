@@ -26,10 +26,10 @@ public class NewsService {
 			System.out.println(" 뉴스 데이터가 없습니다!");
 		} else {
 			for (News news : newsList) {
-				System.out.println("📰 " + news);
+
 			}
 		}
-		System.out.println(newsList);
+
 	}
 
 	public void updateNews(int id, String newTitle, String newLink, String newPress) {

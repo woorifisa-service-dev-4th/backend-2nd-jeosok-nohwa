@@ -1,6 +1,6 @@
 package jeosok_nowha.backend.domain.chat;
 
-import jeosok_nowha.backend.domain.chat.config.ChatConfig;
+import jeosok_nowha.backend.global.common.config.ChatConfig;
 import java.io.*;
 import java.net.Socket;
 
@@ -51,28 +51,27 @@ public class ChatClient {
 	private void sendMessageLoop() throws IOException {
 		String message;
 		while (true) {
-			System.out.print("user: "); // 개행 없이 표시
-			message = keyboardInput.readLine(); // 사용자 입력 받기
+			System.out.print(name + ": "); // 🚀 사용자 이름 포함해서 출력
+			System.out.flush(); // 🚀 버퍼 강제 출력
 
+			message = keyboardInput.readLine(); // 🚀 사용자 입력 받기
+			if (message == null || message.trim().isEmpty()) continue; // 🚀 빈 메시지 방지
+
+			// ✅ 사용자가 `/quit`를 입력하면 종료
 			if ("/quit".equalsIgnoreCase(message)) {
-				serverOutput.println("/quit");
+				serverOutput.println("quit");
+				serverOutput.flush();
 				break;
 			}
+
 			serverOutput.println(name + ": " + message);
+			serverOutput.flush(); // 🚀 메시지 즉시 전송
 		}
 	}
 
 	private void closeResources() {
-		try {
-			if (serverInput != null) serverInput.close();
-		} catch (IOException ex) {
-			System.out.println("❌ BufferedReader 종료 오류");
-		}
-		try {
-			if (serverOutput != null) serverOutput.close();
-		} catch (Exception ex) {
-			System.out.println("❌ PrintWriter 종료 오류");
-		}
+		try { if (serverInput != null) serverInput.close(); } catch (IOException ex) { System.out.println("❌ BufferedReader 종료 오류"); }
+		try { if (serverOutput != null) serverOutput.close(); } catch (Exception ex) { System.out.println("❌ PrintWriter 종료 오류"); }
 		try {
 			if (socket != null) {
 				System.out.println("✅ 소켓 종료...");
@@ -82,4 +81,6 @@ public class ChatClient {
 			System.out.println("❌ 소켓 종료 오류");
 		}
 	}
+
+
 }
