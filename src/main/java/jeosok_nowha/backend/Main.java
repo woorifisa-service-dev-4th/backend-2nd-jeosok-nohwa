@@ -9,6 +9,8 @@ public class Main {
 	public static void main(String[] args) {
 		// 회원 관리 시스템 실행
 
+
+		//TODO 로직분리 예정
 		MemberRepository memberRepository = MemberRepository.getInstance();
 		MemberService memberService = new MemberService(memberRepository);
 		MemberController memberController = new MemberController(memberService);
