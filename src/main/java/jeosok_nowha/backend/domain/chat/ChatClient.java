@@ -16,8 +16,10 @@ public class ChatClient {
 
 		// 🔥 ChatConfig 사용해서 YML에서 설정 가져오기
 		ChatConfig config = new ChatConfig();
-		String host = config.getHost();
-		int port = config.getPort();
+		//String host = config.getHost();
+		//int port = config.getPort();
+		String host = "192.168.0.28";
+		int port = 8888;
 
 		System.out.println("✅ 서버에 연결 중... " + host + ":" + port);
 		this.socket = new Socket(host, port);

@@ -17,9 +17,14 @@ public class ChatServer {
 	}
 
 	public void startServer() {
+		/*
 		ChatConfig config = new ChatConfig();
 		String host = config.getHost();
 		int port = config.getPort();
+
+		 */
+		String host = "192.168.0.28";
+		int port = 8888;
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			System.out.println("✅ 채팅 서버가 시작되었습니다.");
 
