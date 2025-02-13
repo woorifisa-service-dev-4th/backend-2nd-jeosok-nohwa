@@ -1,4 +1,4 @@
-package jeosok_nowha.backend.domain.chat.config;
+package jeosok_nowha.backend.global.common.config;
 
 import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;

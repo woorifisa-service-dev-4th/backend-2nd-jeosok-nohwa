@@ -63,11 +63,11 @@ public class NewsController {
 			System.out.println("2. 뉴스 전체 조회");
 			System.out.println("3. 뉴스 수정");
 			System.out.println("4. 뉴스 삭제");
-			System.out.println("5. 메인 화면");
+			System.out.println("5. 뒤로가기");
 			System.out.print("선택: ");
 
 			int choice = scanner.nextInt();
-			scanner.nextLine(); // 버퍼 클리어
+			scanner.nextLine();
 
 			switch (choice) {
 				case 1:
@@ -90,8 +90,6 @@ public class NewsController {
 				default:
 					System.out.println("올바른 번호를 입력하세요.");
 			}
-			scanner.close();
-			System.out.println("프로그램을 종료합니다.");
 		}
 	}
 }

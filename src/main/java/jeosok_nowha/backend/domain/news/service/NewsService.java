@@ -17,11 +17,19 @@ public class NewsService {
 	public void createNews( String title,String link,String press){
 		News news = new News(title,link, press);
 		News savedNews = newsRepository.save(news);
-		System.out.println("✅ 뉴스 추가 완료: " +  savedNews);
+		System.out.println(" 뉴스 추가 완료: " +  savedNews);
 	}
 
 	public void newsAlllist(){
 		List<News> newsList = newsRepository.findAll();
+		if (newsList.isEmpty()) {
+			System.out.println(" 뉴스 데이터가 없습니다!");
+		} else {
+			for (News news : newsList) {
+
+			}
+		}
+
 	}
 
 	public void updateNews(int id, String newTitle, String newLink, String newPress) {
@@ -31,10 +39,10 @@ public class NewsService {
 			Optional<News> optionalNews = newsRepository.findById(id);
 			if (optionalNews.isPresent()) {
 				News news = optionalNews.get();
-				System.out.println("✅ 뉴스 수정 완료: " + news);
+				System.out.println(" 뉴스 수정 완료: " + news);
 			}
 		} else {
-			System.out.println("❌ 해당 ID의 뉴스를 찾을 수 없습니다.");
+			System.out.println(" 해당 ID의 뉴스를 찾을 수 없습니다.");
 		}
 	}
 
@@ -43,20 +51,20 @@ public class NewsService {
 	public void deleteNews(int id){
 		boolean isDeleted = newsRepository.deleteById(id);
 		if (isDeleted) {
-			System.out.println("✅ 뉴스 삭제 완료!");
+			System.out.println(" 뉴스 삭제 완료!");
 		} else {
-			System.out.println("❌ 해당 ID의 뉴스를 찾을 수 없습니다.");
+			System.out.println(" 해당 ID의 뉴스를 찾을 수 없습니다.");
 		}
 	}
 
 	public void fetchAndSaveNews() {
 		List<News> newsList = NewsCrawler.fetchNews();
 		if (newsList.isEmpty()) {
-			System.out.println("❌ 크롤링된 뉴스가 없습니다.");
+			System.out.println(" 크롤링된 뉴스가 없습니다.");
 			return;
 		}
 
-		System.out.println("✅ 크롤링한 뉴스 데이터를 DB에 저장 중...");
+		System.out.println(" 크롤링한 뉴스 데이터를 DB에 저장 중...");
 		for (News news : newsList) {
 			newsRepository.save(news);
 		}
