@@ -30,7 +30,7 @@ class MemberControllerTest {
 	void signUp_Fails_When_Email_Invalid() {
 		// When & Then
 		Exception exception = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "ss", 175.0, 70.0, "password123")
+			memberController.signUp("testUser", "sss", 175.0, 70.0, "password123")
 		);
 		assertEquals("❌ 유효한 이메일 형식을 입력하세요 (예: user@example.com)", exception.getMessage());
 	}
@@ -40,7 +40,7 @@ class MemberControllerTest {
 	void signUp_Fails_When_Nickname_Empty() {
 		// When & Then
 		Exception exception = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("", "test@example.com", 175.0, 70.0, "password123")
+			memberController.signUp("", "test@naver.com", 175.0, 70.0, "password123")
 		);
 		assertEquals("닉네임은 필수 입력값입니다.", exception.getMessage());
 	}
@@ -50,12 +50,12 @@ class MemberControllerTest {
 	void signUp_Fails_When_Height_Invalid() {
 		// When & Then
 		Exception exception1 = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "test@example.com", 0, 70.0, "password123")
+			memberController.signUp("testUser", "test@naver.com", 0, 70.0, "password123")
 		);
 		assertEquals("❌ 키는 0보다 크고 300cm 이하이어야 합니다.", exception1.getMessage());
 
 		Exception exception2 = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "test@example.com", 305, 70.0, "password123")
+			memberController.signUp("testUser", "test@naver.com", 305, 70.0, "password123")
 		);
 		assertEquals("❌ 키는 0보다 크고 300cm 이하이어야 합니다.", exception2.getMessage());
 	}
@@ -65,12 +65,12 @@ class MemberControllerTest {
 	void signUp_Fails_When_Weight_Invalid() {
 		// When & Then
 		Exception exception1 = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "test@example.com", 175.0, 0, "password123")
+			memberController.signUp("testUser", "test@naver.com", 175.0, 0, "password123")
 		);
 		assertEquals("❌ 몸무게는 0보다 크고 300kg 이하이어야 합니다.", exception1.getMessage());
 
 		Exception exception2 = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "test@example.com", 175.0, 305, "password123")
+			memberController.signUp("testUser", "test@naver.com", 175.0, 305, "password123")
 		);
 		assertEquals("❌ 몸무게는 0보다 크고 300kg 이하이어야 합니다.", exception2.getMessage());
 	}
@@ -80,7 +80,7 @@ class MemberControllerTest {
 	void signUp_Fails_When_Password_Empty() {
 		// When & Then
 		Exception exception = assertThrows(IllegalArgumentException.class, () ->
-			memberController.signUp("testUser", "test@example.com", 175.0, 70.0, "")
+			memberController.signUp("testUser", "test@naver.com", 175.0, 70.0, "")
 		);
 		assertEquals("❌ 비밀번호는 필수 입력값입니다.", exception.getMessage());
 	}
