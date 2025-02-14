@@ -16,7 +16,7 @@ public class ChatController {
 			ChatPrintUtil.printChatStart();
 			System.out.println("💬 채팅 실행 모드를 선택하세요:");
 			System.out.println("1. 서버 실행");
-			System.out.println("2. 클라이언트만 실행");
+			System.out.println("2. 클라이언트 실행");
 			System.out.print("> ");
 
 			String mode = scanner.nextLine().trim();
@@ -32,9 +32,6 @@ public class ChatController {
 				// ✅ 서버가 준비될 시간을 주기 위해 대기 (필요할 경우)
 				Thread.sleep(1000);
 
-				/*// ✅ 클라이언트 실행
-				System.out.println("✅ 클라이언트 실행");
-				new ChatClient(nickname);*/
 
 			} else if ("2".equals(mode)) {
 

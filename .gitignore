@@ -18,7 +18,7 @@ out/
 .idea
 
 ### DataBase ###
-config.yml
+**/config.yml
 
 ### Eclipse ###
 .apt_generated

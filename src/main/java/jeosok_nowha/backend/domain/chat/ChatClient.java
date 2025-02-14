@@ -3,6 +3,7 @@ package jeosok_nowha.backend.domain.chat;
 import jeosok_nowha.backend.global.common.config.ChatConfig;
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLOutput;
 
 public class ChatClient {
 	private final String name;
@@ -20,6 +21,7 @@ public class ChatClient {
 		//int port = config.getPort();
 		String host = "192.168.0.28";
 		int port = 8888;
+
 
 		System.out.println("✅ 서버에 연결 중... " + host + ":" + port);
 		this.socket = new Socket(host, port);
