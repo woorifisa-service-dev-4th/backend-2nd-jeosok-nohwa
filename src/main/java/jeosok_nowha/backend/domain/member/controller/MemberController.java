@@ -155,4 +155,29 @@ public class MemberController {
 		MemberPrintUtil.printError("❌ 허용되지 않은 이메일 도메인입니다. (예: @gmail.com, @naver.com 등)");
 		return false;
 	}
+
+	// 테스트를 위한 오버로딩 추가
+	public void signUp(String nickname, String email, double height, double weight, String password) {
+		if (nickname == null || nickname.isEmpty()) {
+			throw new IllegalArgumentException("닉네임은 필수 입력값입니다.");
+		}
+		if (!isValidEmail(email)) {
+			throw new IllegalArgumentException("❌ 유효한 이메일 형식을 입력하세요 (예: user@example.com)");
+		}
+		if (height <= 0 || height > 300) {
+			throw new IllegalArgumentException("❌ 키는 0보다 크고 300cm 이하이어야 합니다.");
+		}
+		if (weight <= 0 || weight > 300) {
+			throw new IllegalArgumentException("❌ 몸무게는 0보다 크고 300kg 이하이어야 합니다.");
+		}
+		if (password == null || password.isEmpty()) {
+			throw new IllegalArgumentException("❌ 비밀번호는 필수 입력값입니다.");
+		}
+
+		// 정상적으로 회원가입 요청 객체 생성 후 가입
+		SignUpRequest request = new SignUpRequest(email, password, nickname, height, weight);
+		userService.signUp(request);
+	}
+
+
 }
