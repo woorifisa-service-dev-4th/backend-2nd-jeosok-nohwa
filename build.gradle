@@ -1,47 +1,57 @@
-    plugins {
-        id 'java'
-        id 'application' // ✅ 애플리케이션 실행 플러그인 추가
+plugins {
+    id 'java'
+    id 'application' // ✅ 애플리케이션 실행 플러그인 추가
+}
+
+group = 'jeosok_nowha.backend'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation 'mysql:mysql-connector-java:8.0.33'
+
+    // Jsoup 라이브러리
+    implementation 'org.jsoup:jsoup:1.15.3'
+
+    // YAML 설정
+    implementation 'org.yaml:snakeyaml:2.2'
+
+    // SLF4J (로그)
+    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+
+    // JUnit 5 (Jupiter API & Engine)
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+
+    // Mockito Core (Mocking 라이브러리)
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+
+    // Mockito JUnit 5 확장 지원
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+
+    // AssertJ (더 읽기 쉬운 테스트 어서션, 선택 사항)
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+}
+
+
+
+// ✅ 실행할 메인 클래스 지정
+application {
+    mainClass = 'jeosok_nowha.backend.Main'
+}
+
+// ✅ 실행 가능한 JAR 파일 생성 설정
+jar {
+    manifest {
+        attributes 'Main-Class': 'jeosok_nowha.backend.Main'
     }
+}
 
-    group = 'jeosok_nowha.backend'
-    version = '1.0-SNAPSHOT'
-
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        testImplementation platform('org.junit:junit-bom:5.10.0')
-        testImplementation 'org.junit.jupiter:junit-jupiter'
-        testImplementation 'org.mockito:mockito-core:5.2.0'
-        testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
-        implementation 'mysql:mysql-connector-java:8.0.33'
-
-        // Jsoup 라이브러리
-        implementation 'org.jsoup:jsoup:1.15.3'
-
-        // YAML 설정
-        implementation 'org.yaml:snakeyaml:2.2'
-
-        // SLF4J (로그)
-        implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
-        implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
-    }
-
-
-
-    // ✅ 실행할 메인 클래스 지정
-    application {
-        mainClass = 'jeosok_nowha.backend.Main'
-    }
-
-    // ✅ 실행 가능한 JAR 파일 생성 설정
-    jar {
-        manifest {
-            attributes 'Main-Class': 'jeosok_nowha.backend.Main'
-        }
-    }
-
-    test {
-        useJUnitPlatform()
-    }
+test {
+    useJUnitPlatform()
+}
