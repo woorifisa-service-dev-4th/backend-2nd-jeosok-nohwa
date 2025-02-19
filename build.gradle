@@ -53,5 +53,5 @@ jar {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform() // JUnit 5 사용 설정
 }
