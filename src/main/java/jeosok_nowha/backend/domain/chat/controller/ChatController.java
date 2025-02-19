@@ -4,10 +4,15 @@ import jeosok_nowha.backend.domain.chat.ChatServer;
 import jeosok_nowha.backend.domain.chat.ChatClient;
 import jeosok_nowha.backend.domain.chat.util.ChatPrintUtil;
 
+import java.net.ServerSocket;
 import java.util.Scanner;
 
 public class ChatController {
 	private static ChatServer chatServer;
+
+	public ChatController(ServerSocket serverSocket) {
+		this.chatServer = new ChatServer(serverSocket); // 주입된 ServerSocket 사용
+	}
 
 	public void run(String nickname) {
 		Scanner scanner = new Scanner(System.in);
@@ -25,7 +30,7 @@ public class ChatController {
 				// ✅ 서버 실행 (백그라운드 스레드에서 실행)
 				if (chatServer == null) {
 					System.out.println("✅ 서버 시작...");
-					chatServer = new ChatServer();
+
 					new Thread(() -> chatServer.startServer()).start();
 				}
 

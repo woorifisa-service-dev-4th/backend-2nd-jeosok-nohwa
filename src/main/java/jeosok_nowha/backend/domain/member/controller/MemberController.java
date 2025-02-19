@@ -16,6 +16,7 @@ import jeosok_nowha.backend.global.common.utils.PrintUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.util.regex.Pattern;
 
 public class MemberController {
@@ -54,7 +55,8 @@ public class MemberController {
 						 */
 						//String currentUser = userService.currentUser.getNickname();
 						String currentUser = "woori";
-						ChatController chatController = new ChatController();
+						ServerSocket serverSocket = new ServerSocket(8888);
+						ChatController chatController = new ChatController(serverSocket);
 						chatController.run(currentUser);
 						continue; // 채팅 종료 후 메인 메뉴로 돌아가기
 					case "5":
