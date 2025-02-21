@@ -16,7 +16,7 @@ public class NewsRepository {
 	private final List<News> newsList = new ArrayList<>();
 	private int newsIdCount=1;
 
-	// 🔹 뉴스 저장
+	// 뉴스 저장
 	public News save(News news) {
 		String query = "INSERT INTO news (title, link, press) VALUES (?, ?, ?)";
 
@@ -40,6 +40,8 @@ public class NewsRepository {
 		return null;
 	}
 
+
+	// 뉴스 조회
 	public List<News> findAll() {
 		List<News> newsList = new ArrayList<>();
 		String query = "SELECT id, title, link, press FROM news";
@@ -49,14 +51,11 @@ public class NewsRepository {
 			 ResultSet rs = stmt.executeQuery(query)) {
 
 			while (rs.next()) {
-				// NULL 값 체크 후 기본값 할당
 				int id = rs.getInt("id");
 				String title = rs.getString("title");
 				String link = rs.getString("link");
 				String press = rs.getString("press");
 
-				// 디버깅을 위한 데이터 출력
-				//System.out.println("조회된 데이터: ");
 				System.out.println("ID: " + id);
 				System.out.println("제목: " + title);
 				System.out.println("링크: " + link);
@@ -77,7 +76,7 @@ public class NewsRepository {
 	}
 
 
-
+	// 뉴스 검색 (뉴스 id)
 	public Optional<News> findById(int id) {
 		String query = "SELECT id, title, link, press FROM news WHERE id = ?";
 
@@ -98,11 +97,11 @@ public class NewsRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return Optional.empty(); // 찾지 못한 경우 빈 Optional 반환
+		return Optional.empty();
 	}
 
 
-	// 🔹 뉴스 수정 (Update)
+	// 뉴스 수정
 	public boolean update(int id, String newTitle,String newLink,String newPress) {
 		String query = "UPDATE news SET title = ?, link = ?,  press = ?, WHERE id = ?";
 
@@ -120,7 +119,7 @@ public class NewsRepository {
 		return false;
 	}
 
-	// 🔹 뉴스 삭제 (Delete)
+	// 뉴스 삭제
 	public boolean deleteById(int id) {
 		String query = "DELETE FROM news WHERE id = ?";
 
@@ -134,9 +133,5 @@ public class NewsRepository {
 		}
 		return false;
 	}
-
-
-
-
 
 }
